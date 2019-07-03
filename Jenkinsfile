@@ -9,9 +9,9 @@ node {
        sh 'mvn clean compile'
      }
    }
-   stage('SONARID') {
+   stage('sonarascanner') {
      withMaven(jdk: 'JDK-1.8', maven: 'Maven-3.6.1') {
-       withSonarQubeEnv(credentialsId: 'sonarID') {
+       withSonarQubeEnv(credentialsId: 'SONARID') {
          sh 'mvn verify sonar:sonar'   
        }
     }
