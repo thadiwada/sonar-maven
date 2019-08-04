@@ -1,26 +1,28 @@
 node {
     stage('Code Checkout') { // for display purposes
      echo 'Checout Code and clone it inside jenkins workspace.'
-     git 'https://github.com/thadiwada/sonar-maven.git'
+     git 'https://github.com/itrainavengers/sonar-maven.git'
    }
    stage('Build Test & Package') {
       echo 'Build the package'
-        clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar 
-    -Dsonar.host.url=https://sonarcloud.io 
-    -Dsonar.organization=tempsoanrjen 
-    -Dsonar.login=829af48b256806fb01c3cd7d158f75f20dcad584
+      withMaven(jdk: 'JDK-1.8', maven: 'Maven-3.6.1') {
+       sh 'mvn clean install'
      }
    }
-   stage('sonarascanner') {
-     withMaven(jdk: 'JDK-1.8', maven: 'Maven3.6.1') {
-       withSonarQubeEnv('SONARID') {
-         sh 'mvn verify sonar:sonar'   
-       }
-    }
-  }
+   stage('SonarScan') {
+      //withSonarQubeEnv('SonarQube') {
+         withMaven(jdk: 'JDK-1.8', maven: 'Maven-3.6.1') {
+             //sh 'mvn clean package sonar:sonar' 
+             sh 'mvn org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar' +
+             ' -Dsonar.host.url=https://sonarcloud.io '+
+             ' -Dsonar.organization=tempsoanrjen '+ 
+             ' -Dsonar.login=829af48b256806fb01c3cd7d158f75f20dcad584 '   
+         //}
+      }
+   }
    stage('Artifacts') {
        echo 'package the project artifacts..'
-       withMaven(jdk: 'JDK-1.8', maven: 'MAVEN') {
+       withMaven(jdk: 'JDK-1.8', maven: 'Maven-3.6.1') {
        sh 'mvn package'
      }
    
