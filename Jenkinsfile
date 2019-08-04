@@ -5,8 +5,8 @@ node {
    }
    stage('Build Test & Package') {
       echo 'Build the package'
-      withMaven(jdk: 'JDK-1.8', maven: 'Maven3.6.1') {
-       sh 'mvn clean compile'
+      withMaven(maven:'Maven_3_3_9', mavenLocalRepo: '.repository',mavenSettingsConfig:'my-config') {
+      sh 'mvn clean install'
      }
    }
    stage('sonarascanner') {
