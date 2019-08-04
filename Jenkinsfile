@@ -5,8 +5,15 @@ node {
    }
    stage('Build Test & Package') {
       echo 'Build the package'
-      withMaven(maven:'Maven_3_3_9', mavenLocalRepo: '.repository',mavenSettingsConfig:'my-config') {
-      sh 'mvn clean install'
+      withMaven(
+    maven="maven-3.3.9",
+    mavenSettingsConfig: 'my-maven-settings',
+    options: [
+        artifactsPublisher(disabled: true), 
+        findbugsPublisher(disabled: true), 
+        openTasksPublisher(disabled: true)]) {
+
+    sh "mvn clean deploy"
      }
    }
    stage('sonarascanner') {
