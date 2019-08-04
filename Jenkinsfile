@@ -5,15 +5,10 @@ node {
    }
    stage('Build Test & Package') {
       echo 'Build the package'
-      withMaven(
-    maven="maven-3.3.9",
-    mavenSettingsConfig: 'my-maven-settings',
-    options: [
-        artifactsPublisher(disabled: true), 
-        findbugsPublisher(disabled: true), 
-        openTasksPublisher(disabled: true)]) {
-
-    sh "mvn clean deploy"
+        clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar 
+    -Dsonar.host.url=https://sonarcloud.io 
+    -Dsonar.organization=tempsoanrjen 
+    -Dsonar.login=829af48b256806fb01c3cd7d158f75f20dcad584
      }
    }
    stage('sonarascanner') {
