@@ -5,12 +5,12 @@ node {
    }
    stage('Build Test & Package') {
       echo 'Build the package'
-      withMaven(jdk: 'JDK-1.8', maven: 'MAVEN') {
+      withMaven(jdk: 'JDK-1.8', maven: 'Maven3.6.1') {
        sh 'mvn clean compile'
      }
    }
    stage('sonarascanner') {
-     withMaven(jdk: 'JDK-1.8', maven: 'MAVEN') {
+     withMaven(jdk: 'JDK-1.8', maven: 'Maven3.6.1') {
        withSonarQubeEnv('SONARID') {
          sh 'mvn verify sonar:sonar'   
        }
